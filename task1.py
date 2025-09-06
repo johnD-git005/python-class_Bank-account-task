@@ -3,9 +3,14 @@ import random
 class BankAccount:
     promo_prize = 2000
 
-    def __init__(self, name, balance, has_promo=False, sms=False, email=False, isAdmin = False):
+    def __init__(self, name, balance, type_of_act, has_promo=False, sms=False, email=False, isAdmin = False):
         if has_promo:
             balance += self.promo_prize
+        
+        if type_of_act == "savings":
+            type_of_act = "savings"
+        else:
+            type_of_act = "current"
 
         self.acc_name = name
         self.acc_number = random.randint(100, 1000)
@@ -14,9 +19,10 @@ class BankAccount:
         self.email = email
         self.isAdmin = isAdmin
         self.is_frozen = False
+        self.acct_type = type_of_act
 
     def details(self):
-            return f"Name: {self.acc_name}, Number: {self.acc_number}, Balance: {self.balance}"
+            return f"Name: {self.acc_name}, Number: {self.acc_number}, Balance: {self.balance}, Account Type: {self.acct_type}"
 
     def deposit(self, amount):
         if self.is_frozen:
@@ -103,9 +109,9 @@ class BankAccount:
             return f"You're Not An Admin! to Unfreeze"
 
 
-admin = BankAccount("Dan", 5000, isAdmin=True)
-john = BankAccount("John", 5000, has_promo=True, sms=True, email=True)
-tom = BankAccount("Tom", 2000, has_promo=False, sms=True, email=False)
+admin = BankAccount("Dan", 5000, "current", isAdmin=True)
+john = BankAccount("John", 5000, "savings",has_promo=True, sms=True, email=True)
+tom = BankAccount("Tom", 2000, "savings", has_promo=False, sms=True, email=False)
 
 print(john.details())
 print(tom.details())
