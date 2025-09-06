@@ -1,5 +1,4 @@
 import random
-import datetime
 
 class BankAccount:
     promo_prize = 2000
@@ -10,7 +9,6 @@ class BankAccount:
 
         self.acc_name = name
         self.acc_number = random.randint(100, 1000)
-        self.date_time = str(datetime.date.today())
         self.balance = balance
         self.sms = sms
         self.email = email
@@ -58,6 +56,7 @@ class BankAccount:
             self.withdrawal(amount)
             sender_message = self.message("debit", amount)
 
+            #self.balance += amount
             to_acc.deposit(amount)
             recievers_message = to_acc.message("credit", amount)
 
@@ -66,14 +65,13 @@ class BankAccount:
 
     def message(self, transaction_type, amount):
         if transaction_type == "credit":
-            transaction_alert = f"Credit Alert {self.acc_name}, New Balance: {self.balance} Time: {self.date_time}"
+            transaction_alert = f"Credit Alert {self.acc_name}, New Balance: {self.balance}"
 
         elif transaction_type == "debit":
-            transaction_alert = f"Debit Alert {self.acc_name}, New Balance: {self.balance} Time: {self.date_time}"
+            transaction_alert = f"Debit Alert {self.acc_name}, New Balance: {self.balance}"
 
         else:
-            transaction_alert = f"Transaction Alert: Acct: {self.acc_name}, New Balance: {self.balance} Time: {self.date_time}"
-
+            transaction_alert = f"Transaction Alert: Acct: {self.acc_name}, New Balance: {self.balance}"
 
         if self.sms and self.email:
             return f"SMS: {transaction_alert} \n EMAIL: {transaction_alert}"
@@ -111,28 +109,16 @@ tom = BankAccount("Tom", 2000, has_promo=False, sms=True, email=False)
 
 print(john.details())
 print(tom.details())
-print("")
-print(john.deposit(1000))
-print("")
-print(john.withdrawal(500))
-print("")
-print(john.transfer(1500, tom))
-print("")
-print(john.account_freeze(admin))
-
-(admin.account_freeze(john))
-
-print("")
-print(john.deposit(1000))
-print(john.withdrawal(500))
-print(john.transfer(1500, tom))
-
-(admin.account_unfreeze(john))
 
 print("")
 print(john.deposit(1000))
 
-print("")
-print(tom.transfer(1500, admin))
-print(tom.transfer(1500, john))
+admin.account_freeze(john)
 
+print("")
+print(john.deposit(1000))
+
+admin.account_unfreeze(john)
+
+print("")
+print(john.deposit(1000))
